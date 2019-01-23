@@ -3,7 +3,7 @@ name: Preparation discussion
 about: Brainstorming and jotting down ideas before moving onto development of the
   game.
 title: Prep - <Title Goes Here>
-labels: ''
+labels: brainstorm
 assignees: ''
 
 ---
