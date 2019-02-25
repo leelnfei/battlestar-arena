@@ -6,9 +6,7 @@ This project is licensed under the [GNU General Public License](https://github.c
 
 Before contributing to this project, please review the [Code of Conduct](https://github.com/kikiriki-studios-canada/battlestar-arena/blob/master/CODE_OF_CONDUCT.md), and [Contributing Guidelines](https://github.com/kikiriki-studios-canada/battlestar-arena/blob/master/CONTRIBUTING.md).
 
-This is a new update.
-
-Hello my name is Rhys.
+Important stuff.
 
 **This project is developed using Unity version 2018.2.18f1, please use the same version.**
 
