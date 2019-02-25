@@ -8,6 +8,10 @@ Before contributing to this project, please review the [Code of Conduct](https:/
 
 Important stuff.
 
+New lines!
+
+Another one.
+
 **This project is developed using Unity version 2018.2.18f1, please use the same version.**
 
 ![Sketch of the basic game concept for Battlestar Arena](https://i.imgur.com/3zRNcvz.png "Basic game concept")
