@@ -3,4 +3,4 @@ title: Home!
 layout: default
 ---
 
-This is the content of my page
+More content will be added to this page later! For a PDF Guide on how to use GitHub Desktop, written by [Stephen Edwards](https://github.com/sventi555/), please refer to [this link](https://battlestar-arena.kikiriki.ca/files/github-desktop-guide.pdf).
