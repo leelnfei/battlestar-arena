@@ -55,7 +55,9 @@ I’ll be creating a feature branch, and I’ll name it “add-lore-page”. You
 
 `[ft/fx]—name-of-branch-<TRELLO_CARD_ID>`
 
-For example, if this guide were for a real branch, and the related Trello card had id `BA-12`, I would name the branch: `ft—add-lore-page-BA-12`
+For example, if this guide were for a real branch, and the related Trello card had id `BA-12`, I would name the branch: `ft—add-lore-page-ba-12`.
+
+> Please keep branch names lowercased! - matootie.
 
 ![](img/image_1.png)
 
