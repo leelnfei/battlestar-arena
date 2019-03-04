@@ -22,15 +22,12 @@ public class PlayerMovement : MonoBehaviour {
 	private void MovementAbility () {
 		Vector2 direction = playerRigidbody.velocity.normalized;
 		playerRigidbody.AddForce(direction * movementAbilityPushFactor * playerRigidbody.drag);
-		Debug.Log("Moved!");
 	}
 
 	private IEnumerator MovementAbilityCooldown () {
 		isMovementAbilityAvailable = false;
-		Debug.Log("Movement ability on cooldown.");
 		yield return new WaitForSeconds(movementAbilityCooldownTime);
 		isMovementAbilityAvailable = true;
-		Debug.Log("Movement ability available again.");
 	}
 
 	private void Update () {
