@@ -8,6 +8,6 @@ Before contributing to this project, please review the [Code of Conduct](https:/
 
 Development of this project is maintained on a Trello board you can find [here](https://trello.com/b/ut7AXLvF).
 
-**This project is developed using Unity version 2018.2.18f1**, *please* use the same version.
+**This project is developed using Unity version 2018.2.18f1**, *please* use the same version. 
 
 ![Sketch of the basic game concept for Battlestar Arena](https://i.imgur.com/3zRNcvz.png "Basic game concept")
