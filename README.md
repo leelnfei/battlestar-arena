@@ -1,6 +1,6 @@
 # Welcome to Battlestar Arena!
 
-A four person 2D arena shooter. Last players standing wins!
+A multiplayer 2D arena shooter. Last players standing wins!
 
 This project is licensed under the [GNU General Public License](https://github.com/kikiriki-studios-canada/battlestar-arena/blob/master/LICENSE).
 
