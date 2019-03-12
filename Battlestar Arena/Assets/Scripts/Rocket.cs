@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketData : MonoBehaviour {
+public class Rocket : MonoBehaviour {
 
 	// The amount of time the rocket can stay alive without contact.
 	// This value is directly set by the players FireRocket component, on instantiation.
@@ -11,9 +11,9 @@ public class RocketData : MonoBehaviour {
 	public GameObject sender;
 
 	// Called when the rocket must be destroyed.
-	private void Death () {
+	public void Death () {
 		// Run the Reset method on the sender.
-		sender.GetComponent<FireRocket>().Reset();
+		sender.GetComponent<PlayerFireRocket>().Reset();
 		// TODO: Animate.
 		// TODO: Play sounds.
 		// Destroy the gameobject.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class ProjectileMovement : MonoBehaviour {
+public class RocketMovement : MonoBehaviour {
 	void Start () {
 		projectileRigidbody = gameObject.GetComponent<Rigidbody2D>();
 	}

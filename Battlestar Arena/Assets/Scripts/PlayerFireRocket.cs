@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class FireRocket : MonoBehaviour {
+public class PlayerFireRocket: MonoBehaviour {
 
 	// Called when the object enters a scene.
 	void Start () {
@@ -31,7 +31,7 @@ public class FireRocket : MonoBehaviour {
 		// Get the rocket data component of the instance.
 		// Rocket data is a custom script to store information regarding the rocket,
 		// most importantly it's sender.
-		RocketData rocketData = instance.GetComponent<RocketData>();
+		Rocket rocketData = instance.GetComponent<Rocket>();
 		// Set the rocket data sender to be this gameobject.
 		rocketData.sender = this.gameObject;
 		// Set the rocket data death timer to be the value we provided in this script.
