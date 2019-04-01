@@ -7,11 +7,29 @@ ERROR_CODE=0
 echo "Items in project path ($PROJECT_PATH):"
 ls "$PROJECT_PATH"
 
+echo "Activating Unity..."
+/Applications/Unity/Unity.app/Contents/MacOS/Unity \
+    -logFile \
+    -username ${UNITY_USER} \
+    -password ${UNITY_PSWD} \
+    -batchmode \
+    -noUpm \
+    -quit
+
+echo "Returning License..."
+/Applications/Unity/Unity.app/Contents/MacOS/Unity \
+    -logFile \
+    -batchmode \
+    -returnlicense \
+    -quit
+
 echo "Building project for Windows..."
 mkdir $UNITY_BUILD_DIR
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
+  -username ${UNITY_USER} \
+  -password ${UNITY_PSWD} \
   -silent-crashes \
   -logFile \
   -projectPath "$PROJECT_PATH" \
@@ -22,19 +40,12 @@ echo "Building project for macOS..."
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
+  -username ${UNITY_USER} \
+  -password ${UNITY_PSWD} \
   -silent-crashes \
   -logFile \
   -projectPath "$PROJECT_PATH" \
   -buildOSXUniversalPlayer "$(pwd)/Build/osx/Battlestar.app"  \
-  -quit
-
-echo "Building project for Linux..."
-/Applications/Unity/Unity.app/Contents/MacOS/Unity 
-  -batchmode \
-  -nographics \
-  -silent-crashes \
-  -projectPath "$PROJECT_PATH" \
-  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/Battlestar.exe" 
   -quit
 
 if [ $? = 0 ] ; then
