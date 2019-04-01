@@ -28,8 +28,6 @@ mkdir $UNITY_BUILD_DIR
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
-  -username "${UNITY_USER}" \
-  -password "${UNITY_PSWD}" \
   -silent-crashes \
   -logFile \
   -projectPath "$PROJECT_PATH" \
@@ -40,8 +38,6 @@ echo "Building project for macOS..."
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
-  -username ${UNITY_USER} \
-  -password ${UNITY_PSWD} \
   -silent-crashes \
   -logFile \
   -projectPath "$PROJECT_PATH" \
