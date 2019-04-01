@@ -1,33 +1,52 @@
-#!/bin/sh
+#! /bin/sh
 
-project="Battlestar Arena"
+PROJECT_PATH=$(pwd)/Battlestar\ Arena/
+UNITY_BUILD_DIR=$(pwd)/Build
 
-echo "Attempting to build $project for Windows"
-/Applications/Unity/Unity.app/Contents/MacOS/Unity 
-  -batchmode 
-  -nographics 
-  -silent-crashes 
-  -projectPath "$(pwd)/$project"
-  -buildWindowsPlayer "$(pwd)/Build/windows/$project.exe" 
+ERROR_CODE=0
+echo "Items in project path ($PROJECT_PATH):"
+ls "$PROJECT_PATH"
+
+echo "Building project for Windows..."
+mkdir $UNITY_BUILD_DIR
+/Applications/Unity/Unity.app/Contents/MacOS/Unity \
+  -batchmode \
+  -nographics \
+  -silent-crashes \
+  -logFile \
+  -projectPath "$PROJECT_PATH" \
+  -buildWindows64Player  "$(pwd)/Build/windows/Battlestar.exe" \
   -quit
 
-echo "Attempting to build $project for OS X"
-/Applications/Unity/Unity.app/Contents/MacOS/Unity 
-  -batchmode 
-  -nographics 
-  -silent-crashes 
-  -projectPath "$(pwd)/$project"
-  -buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" 
+echo "Building project for macOS..."
+/Applications/Unity/Unity.app/Contents/MacOS/Unity \
+  -batchmode \
+  -nographics \
+  -silent-crashes \
+  -logFile \
+  -projectPath "$PROJECT_PATH" \
+  -buildOSXUniversalPlayer "$(pwd)/Build/osx/Battlestar.app"  \
   -quit
 
-echo "Attempting to build $project for Linux"
+echo "Building project for Linux..."
 /Applications/Unity/Unity.app/Contents/MacOS/Unity 
-  -batchmode 
-  -nographics 
-  -silent-crashes 
-  -projectPath "$(pwd)/$project"
-  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project.exe" 
+  -batchmode \
+  -nographics \
+  -silent-crashes \
+  -projectPath "$PROJECT_PATH" \
+  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/Battlestar.exe" 
   -quit
+
+if [ $? = 0 ] ; then
+  echo "Building Windows exe completed successfully."
+  ERROR_CODE=0
+else
+  echo "Building Windows exe failed. Exited with $?."
+  ERROR_CODE=1
+fi
+
+echo "Finishing with code $ERROR_CODE"
+exit $ERROR_CODE
 
 echo 'Attempting to zip builds'
 zip -r $(pwd)/Build/linux.zip $(pwd)/Build/linux/
