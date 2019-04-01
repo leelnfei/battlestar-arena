@@ -10,8 +10,8 @@ ls "$PROJECT_PATH"
 echo "Activating Unity..."
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
     -logFile \
-    -username ${UNITY_USER} \
-    -password ${UNITY_PSWD} \
+    -username "${UNITY_USER}" \
+    -password "${UNITY_PSWD}" \
     -batchmode \
     -noUpm \
     -quit
@@ -28,8 +28,8 @@ mkdir $UNITY_BUILD_DIR
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
-  -username ${UNITY_USER} \
-  -password ${UNITY_PSWD} \
+  -username "${UNITY_USER}" \
+  -password "${UNITY_PSWD}" \
   -silent-crashes \
   -logFile \
   -projectPath "$PROJECT_PATH" \
