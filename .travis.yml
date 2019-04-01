@@ -6,9 +6,9 @@ before_install:
 - chmod a+x ./CIScripts/install.sh
 - chmod a+x ./CIScripts/build.sh
 install:
-- ./CIScripts/install.sh
+- travis_wait ./CIScripts/install.sh
 script:
-- ./CIScripts/build.sh
+- travis_wait 30 ./CIScripts/build.sh
 deploy:
     provider: s3
     access_key_id: $ACCESS_KEY_ID
