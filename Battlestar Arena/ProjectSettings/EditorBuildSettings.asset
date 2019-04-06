@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/NetworkingOutline.unity
-    guid: 9db76aee5cc1c4ef6ad508930d350b3e
+    path: Assets/Scenes/DiscordAPIStaging.unity
+    guid: b92068a97b4f94d3896ce67bdac67a63
   m_configObjects: {}

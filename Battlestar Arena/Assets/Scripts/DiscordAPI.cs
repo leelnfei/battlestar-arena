@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DiscordAPI : MonoBehaviour {
 
@@ -13,18 +14,12 @@ public class DiscordAPI : MonoBehaviour {
 	Discord.LobbyManager lobbyManager;
 	Discord.ApplicationManager applicationManager;
 	Discord.ActivityManager activityManager;
+	Discord.UserManager userManager;
 
 	private void Awake () {
 		DontDestroyOnLoad(gameObject);
 
-		var clientID = Environment.GetEnvironmentVariable("DISCORD_CLIENT_ID");
-
-		if (clientID == null) {
-			Debug.Log("Couldn't get Client ID from environment variables.");
-			clientID = "555090239341854739";
-		}
-
-		discord = new Discord.Discord(Int64.Parse(clientID), (UInt64)Discord.CreateFlags.Default);
+		discord = new Discord.Discord(555090239341854739, (UInt64)Discord.CreateFlags.Default);
 
 		discord.SetLogHook(Discord.LogLevel.Debug, (level, message) => {
 			Debug.LogFormat("Log[{0}] {1}", level, message);
@@ -36,8 +31,8 @@ public class DiscordAPI : MonoBehaviour {
 	}
 
 	private void Start () {
-		Debug.LogFormat("Current Locale: {0}", applicationManager.GetCurrentLocale());
-		Debug.LogFormat("Current Branch: {0}", applicationManager.GetCurrentBranch());
+		Conlog(string.Format("Current Locale: {0}", applicationManager.GetCurrentLocale()));
+		Conlog(string.Format("Current Branch: {0}", applicationManager.GetCurrentBranch()));
 
 		var activity = new Discord.Activity {
 			Details = "In Menus",
@@ -47,18 +42,20 @@ public class DiscordAPI : MonoBehaviour {
 		};
 
 		activityManager.UpdateActivity(activity, (result) => {
-			Debug.LogFormat("Update Activity {0}", result);
+			Conlog(string.Format("Update Activity {0}", result));
 		});
 
 		activityManager.OnActivityJoin += JoinLobby;
 	}
 
 	public void CreateLobby () {
+		var user = discord.GetUserManager().GetCurrentUser();
+
 		var transaction = lobbyManager.GetLobbyCreateTransaction();
 
 		lobbyManager.CreateLobby(transaction, (Discord.Result result, ref Discord.Lobby lobby) => {
 			if (result == Discord.Result.Ok) {
-				Debug.LogFormat("Lobby {0} created with secret {1}", lobby.Id, lobby.Secret);
+				Conlog(string.Format("Lobby {0} created with secret {1}", lobby.Id, lobby.Secret));
 
 				var activity = new Discord.Activity {
 					State = "In a Lobby",
@@ -82,7 +79,7 @@ public class DiscordAPI : MonoBehaviour {
 				};
 
 				activityManager.UpdateActivity(activity, (newResult) => {
-					Debug.LogFormat("Update activity {0}", newResult);
+					Conlog(string.Format("Update activity {0}", newResult));
 				});
 			}
 		});
@@ -91,7 +88,7 @@ public class DiscordAPI : MonoBehaviour {
 	public void JoinLobby(string secret) {
 		lobbyManager.ConnectLobbyWithActivitySecret(secret, (Discord.Result result, ref Discord.Lobby lobby) => {
 			if (result == Discord.Result.Ok) {
-				Debug.LogFormat("Lobby {0} joined with secret {1}", lobby.Id, lobby.Secret);
+				Conlog(string.Format("Lobby {0} joined with secret {1}", lobby.Id, lobby.Secret));
 
 				var activity = new Discord.Activity {
 					State = "In a Lobby",
@@ -118,7 +115,7 @@ public class DiscordAPI : MonoBehaviour {
 				lobbyManager.OpenNetworkChannel(lobby.Id, 0, true);
 
 				activityManager.UpdateActivity(activity, (newResult) => {
-					Debug.LogFormat("Update activity {0}", newResult);
+					Conlog(string.Format("Update activity {0}", newResult));
 				});
 
 				for (int i = 0; i < lobbyManager.MemberCount(lobby.Id); i++) {
@@ -140,5 +137,10 @@ public class DiscordAPI : MonoBehaviour {
 
 	private void OnApplicationQuit () {
 		discord.Dispose();
+	}
+
+	private void Conlog (string text) {
+		GameObject.FindWithTag("Console").GetComponent<Text>().text += string.Format("{0}\n", text);
+		Debug.Log(text);
 	}
 }
