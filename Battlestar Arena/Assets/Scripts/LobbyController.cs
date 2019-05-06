@@ -12,15 +12,18 @@ public class LobbyController : MonoBehaviour {
 	Discord.ImageManager imageManager;
 	Discord.UserManager userManager;
 	Discord.LobbyManager lobbyManager;
-	// Lobby lists
+	// Lobby lists.
 	List<Discord.Lobby> connectedLobby = new List<Discord.Lobby>();
 	List<Discord.User> lobbyPeers = new List<Discord.User>();
-	// UI Elements
+	// UI Elements.
 	public Texture2D defaultLobbyMemberTexture;
 	public GameObject lobbyGraphicPanel;
 	public GameObject createLobbyButton;
 	public GameObject leaveLobbyButton;
+	public GameObject queueButton;
 	public RawImage[] lobbyMemberImages;
+	// Queueing.
+	public bool queueing = false;
 
 	void Start () {
 
@@ -185,9 +188,7 @@ public class LobbyController : MonoBehaviour {
 		UpdateActivity(lobby);
 
 		// Trigger the necessary UI.
-		lobbyGraphicPanel.SetActive(true);
-		createLobbyButton.SetActive(false);
-		leaveLobbyButton.SetActive(true);
+		ToggleUIElements(true);
 
 		/* TODO: Set up event methods so that when new members join or leave the lobby, things will happen.
 		 * Additionally, initialize the user interface here, and begin gathering data on player images.
@@ -241,15 +242,53 @@ public class LobbyController : MonoBehaviour {
 		};
 	}
 
+	public void FindMatch () {
+		var searchQuery = lobbyManager.GetSearchQuery();
+		// Filter the results by game mode.
+		string lobbyGameMode = lobbyManager.GetLobbyMetadataValue(connectedLobby[0].Id, "gamemode");
+		searchQuery.Filter("metadata.gamemode", Discord.LobbySearchComparison.Equal, Discord.LobbySearchCast.String, lobbyGameMode);
+		// Sort the results by nearest average ELO rating.
+		string lobbyAverageELO = lobbyManager.GetLobbyMetadataValue(connectedLobby[0].Id, "avg_elo");
+		searchQuery.Sort("meteadata.avg_elo", Discord.LobbySearchCast.Number, lobbyAverageELO);
+		searchQuery.Distance(Discord.LobbySearchDistance.Extended);
+		StartCoroutine(Queue(searchQuery));
+	}
+
+	IEnumerator Queue (Discord.LobbySearchQuery searchQuery) {
+		gameManager.Conlog("Queueing...");
+		queueing = true;
+		yield return new WaitUntil(() => {
+			uint resultsToGet = 1;
+			while (queueing) {
+				searchQuery.Limit(resultsToGet);
+				lobbyManager.Search(searchQuery, (result) => {
+					if (result == Discord.Result.Ok) {
+						var resultCount = lobbyManager.LobbyCount();
+						gameManager.Conlog(string.Format("{0} lobbies were found", resultCount));
+						if (resultCount > 0) {
+							var bestLobbyId = lobbyManager.GetLobbyId(0);
+							gameManager.Conlog(string.Format("{0}: Your lobby ID", connectedLobby[0]));
+							gameManager.Conlog(string.Format("{0}: Found lobby ID", bestLobbyId));
+							// TODO: Connect to the lobby.
+							queueing = false;
+						}
+					}
+				});
+				gameManager.Conlog("Couldn't find any lobbies, expanding search.");
+				resultsToGet = resultsToGet * 2;
+			}
+			queueing = false;
+			return true;
+		});
+	}
+
 	void DeinitializeLobby () {
 		foreach (Discord.User user in lobbyManager.GetMemberUsers(connectedLobby[0].Id)) {
 			UnsetImage(user);
 		}
 
 		// Trigger the necessary UI.
-		lobbyGraphicPanel.SetActive(false);
-		createLobbyButton.SetActive(true);
-		leaveLobbyButton.SetActive(false);
+		ToggleUIElements(false);
 
 		lobbyPeers.Clear();
 		connectedLobby.Clear();
@@ -258,6 +297,13 @@ public class LobbyController : MonoBehaviour {
 		/* TODO: Tear down any constructions set up previously, clear the data on player images and
 		 * deinitialize the user interface.
 		 */
+	}
+
+	void ToggleUIElements (bool on) {
+		lobbyGraphicPanel.SetActive(on);
+		createLobbyButton.SetActive(!on);
+		leaveLobbyButton.SetActive(on);
+		queueButton.SetActive(on);
 	}
 
 	void SetImage(Discord.User user) {
