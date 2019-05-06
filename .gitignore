@@ -6,6 +6,8 @@
 Assets/AssetStoreTools*
 
 .DS_Store
+secrets.json
+secrets.json.meta
 
 # Visual Studio cache directory
 .vs/
